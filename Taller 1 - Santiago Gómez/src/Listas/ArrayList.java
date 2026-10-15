@@ -77,14 +77,7 @@ public class ArrayList<E> implements List<E> {
         if(isEmpty()){
             return null;
         }
-        E e = elements[0]; 
-        elements[0] = null;
-        
-        // Todos se desplazan a la izquierda
-        for(int i=0; i < size-1; i++){
-            elements[i] = elements[i+1];
-        }
-        return e;
+        return this.remove(0);
     }
     
     @Override
@@ -92,7 +85,8 @@ public class ArrayList<E> implements List<E> {
         if(isEmpty()){
             return null;
         }
-        return elements[size-1];
+        return this.remove(size-1);
+       
     }
     
     @Override
@@ -123,7 +117,7 @@ public class ArrayList<E> implements List<E> {
         
         // Aquí desplazamos a la derecha todos los elementos
         // desde el índice
-        for(int i = size; i > index; i++){
+        for(int i = size; i > index; i--){
             elements[i] = elements[i-1];
         }
         elements[index] = element;
@@ -189,21 +183,42 @@ public class ArrayList<E> implements List<E> {
     
     // --------------------------------------------------------------------------
 
-    // Métodos privados que me van a ayudar
+    /* ANÁLISIS DE COMPLEJIDAD
+    - El primer ciclo recorre el arreglo 'n' veces para agrupar los datos válidos
+    - El segundo ciclo recorre hasta 'n' veces para limpiar los espacios sobrantes
+    n + n = 2n --> (Se omite la constante) O(n)
+    */
     private void verificarNulos(){
-        // Esto me ayuda a quitar todos los elementos nulos de mi arreglo
+        int indexValido = 0;
         
-        for(int i = size-1; i >= 0; i--){
-            if(elements[i] == null){
-                this.remove(i);
+        // Voy a agrupar todos los elementos válidos a la izquierda
+        for(int i = 0; i < size; i++){
+            if(elements[i] != null){
+                elements[indexValido] = elements[i];
+                indexValido++;
             }
         }
+        
+        // Limpiamos lo que queda al final
+        for(int i = indexValido; i < size; i++){
+            elements[i] = null;
+        }
+        
+        size = indexValido;
     }
     
     // Ahora voy a añadir los métodos de la actividad
     
-    // Intercambia el primer y último elemento
+    /* ANÁLISIS DE COMPLEJIDAD
+    - Ambos remove implican recorrer el arreglo 'n' veces
+    - addFirst implica recorrer el arreglo 'n' veces
+    - addLast en el peor de los casos va a requerir crear otro arreglo 'n'
+    n + n + n + n = 4n --> (Se onmite la constante) O(n)
+    */
     public void moveLastToFirst(){
+        verificarNulos();
+        if(this.isEmpty()) return;
+        
         if(size == 0){
             return;
         }
@@ -215,13 +230,15 @@ public class ArrayList<E> implements List<E> {
         this.addLast(firstElement);
     }
     
-    // Permite identificar el número menor
+    /* ANÁLISIS DE COMPLEJIDAD
+    - verificarNulos() implica recorrer el arreglo 'n' veces.
+    - El ciclo for principal recorre el arreglo 'n-1' veces.
+    n + n = 2n --> (Se omite la constante) O(n)
+    */
     public E findMin(){
-        if(size == 0){
-            return null;
-        }
         
         verificarNulos();
+        if(this.isEmpty()) return null;
         
         E menor = elements[0];
         
@@ -243,8 +260,15 @@ public class ArrayList<E> implements List<E> {
         return menor;
     }
     
+    /* ANÁLISIS DE COMPLEJIDAD
+    - verificarNulos() implica recorrer el arreglo 'n' veces.
+    - El ciclo externo (i) se ejecuta 'n' veces.
+    - El ciclo interno (j) se ejecuta hasta 'n' veces por cada iteración del externo (n * n).
+    n + (n * n) = n + n^2 --> (Se domina por el término mayor) O(n^2)
+    */
     public void sortDescending(){
         verificarNulos();
+        if(this.isEmpty()) return;
         
         // Para el ordenamiento usaré el Bubble Sort
         for(int i = 0; i < size-1; i++){
@@ -263,8 +287,12 @@ public class ArrayList<E> implements List<E> {
         }
     }
     
-    // Esto es para reemplazar instancias, pero es para todas las repetidas,
-    // es decir, que debo reemplazar en todas las que se repiten
+
+    /* ANÁLISIS DE COMPLEJIDAD
+    - verificarNulos() implica recorrer el arreglo 'n' veces.
+    - El ciclo for principal para buscar y reemplazar recorre el arreglo 'n' veces.
+    n + n = 2n --> (Se omite la constante) O(n)
+    */
     public void replace(E oldElement, E newElement){
         verificarNulos();
         
@@ -278,8 +306,15 @@ public class ArrayList<E> implements List<E> {
         }
     }
     
+    /* ANÁLISIS DE COMPLEJIDAD
+    - El ciclo externo e interno combinados visitan cada elemento exactamente 1 vez ('n' veces en total).
+    - addLast en la 'caja' se ejecuta 'n' veces a lo largo de toda la función.
+    - addLast en la 'queue' se ejecuta 'n/groupSize' veces.
+    n + n + (n/groupSize) = 2n + (n/groupSize) --> (Se omiten las constantes y divisiones) O(n)
+    */
     public ArrayList<ArrayList<E>> splitQueue(int groupSize){
         if(groupSize <= 0 ) return null;
+        if(this.isEmpty()) return new ArrayList<>();;
 
         // [1,2,3,4,5,6,7] ; groupSize = 3 -> [ [1,2,3,], [4,5,6], [7] ]
         // Tengo que retornar un Array de Arrays XD
@@ -303,10 +338,16 @@ public class ArrayList<E> implements List<E> {
         return queue;
     }
     
+    
+    /* ANÁLISIS DE COMPLEJIDAD
+    - verificarNulos() implica recorrer el arreglo 'n' veces.
+    - El ciclo for principal recorre el arreglo 'n' veces realizando comparaciones simples.
+    n + n = 2n --> (Se omite la constante) O(n)
+    */
     public int countAbove(E value){
         int contador = 0;
-        
         verificarNulos();
+        if(this.isEmpty()) return 0;
         
         for(int i = 0; i < size; i++){
             
@@ -318,14 +359,21 @@ public class ArrayList<E> implements List<E> {
         return contador;
     }
     
-    // Podría hacer una función recursiva con esto
+    /* ANÁLISIS DE COMPLEJIDAD
+    - verificarNulos() implica recorrer el arreglo 'n' veces.
+    - El ciclo for principal recorre exactamente la mitad del arreglo ('n/2' veces).
+    - Los accesos elements[i] y elements[size - 1 - i] son directos O(1).
+    n + (n/2) = 1.5n --> (Se omiten las constantes) O(n)
+    */
     public boolean isPalindrome(){
         verificarNulos();
+        
+        if(this.isEmpty()) return false;
         
         for(int i = 0; i < size/2 ; i++){
             // Vamos a obtener ambos extremos en cada iteracion
             E izquierdo = elements[i];
-            E derecho = elements[size-1];
+            E derecho = elements[size-1-i];
             
             // Si los extremos no son iguales retornamos falso
             if(!izquierdo.equals(derecho)){
