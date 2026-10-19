@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/F:/Main/Programacion/EDD/LinkedList/src/ListaCircularSE/LCE.java</file>
             <file>file:/F:/Main/Programacion/EDD/LinkedList/src/List/List.java</file>
-            <file>file:/F:/Main/Programacion/EDD/LinkedList/src/List/NodeList.java</file>
-            <file>file:/F:/Main/Programacion/EDD/LinkedList/src/List/LinkedList.java</file>
+            <file>file:/F:/Main/Programacion/EDD/LinkedList/src/ListaCircularDE/LCDE.java</file>
+            <file>file:/F:/Main/Programacion/EDD/LinkedList/src/ListaDoblementeEnlazada/DoublyLinkedList.java</file>
         </group>
     </open-files>
 </project-private>
