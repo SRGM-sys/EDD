@@ -1,5 +1,7 @@
 package LinkedList;
 
+import Clases.Pedido;
+
 public class LinkedList<E> implements List<E>{
     private NodeList<E> header;
     private NodeList<E> last;
@@ -221,5 +223,122 @@ public class LinkedList<E> implements List<E>{
     
     //------------------- MÉTODOS DE LA ACTIVIDAD --------------------
     
+    public static LinkedList<Integer>[] dividirLanzamientos(List<Integer> lista){
+        if(lista == null) return new LinkedList[]{};
+        
+        LinkedList<Integer> ld1 = new LinkedList<>();
+        LinkedList<Integer> ld2 = new LinkedList<>();
+        LinkedList<Integer> ld3 = new LinkedList<>();
+       
+        int contador = 1;
+        int total = lista.size();
+        
+        for(int i = 0; i < total; i++){
+            switch(contador){
+                // Si tuviese un getFirst, la lista original no se modificaría
+                case 1: ld1.addLast(lista.removeFirst()); contador++; break;
+                case 2: ld2.addLast(lista.removeFirst()); contador++; break;
+                case 3: ld3.addLast(lista.removeFirst()); contador = 1; break;
+            }
+        }
+        
+        LinkedList<Integer>[] lanzamientos = new LinkedList[]{ld1,ld2,ld3}; 
+        return lanzamientos;
+    }
+    
+    public static List<String> getPedidosPorCliente(List<Pedido> listaPedidos, String cliente){
+        if(listaPedidos == null || cliente == null) return new LinkedList<>();
+        
+        // Este va a ser la caja general, la final a presentar
+        List<String> productosFinales = new LinkedList<>();
+        
+        // Recorremos todos los nodos
+        for(int i = 0; i < listaPedidos.size(); i++){
+            // Instancio el pedido de todos los nodos
+            Pedido pedidoActual = listaPedidos.get(i);
+            
+            // Verificamos si los clientes hacen match
+            if(pedidoActual.getCliente().equals(cliente)){
+                
+                // Obtenemos todos los pedidos de ese cliente
+                List<String> productosDelPedido = pedidoActual.getProductos();
+                
+                // Vamos a separar pedido por pedido
+                for(int j = 0; j < productosDelPedido.size(); j++){
+                    productosFinales.addLast(productosDelPedido.get(j));
+                }
+                
+            }
+        }
+        
+        return productosFinales;
+    }
+    
+    public static LinkedList<Integer> sumarMenores(LinkedList<Integer> listaA,
+            LinkedList<Integer> listaB){
+        if(listaA == null || listaB == null) return new LinkedList<Integer>();
+        
+        LinkedList<Integer> sumas = new LinkedList<>();
+        
+        for(int i = 0; i < listaA.size(); i++){
+            Integer limite = listaA.get(i);
+            Integer suma = 0;
+            for(int j = 0; j < listaB.size(); j++){
+                Integer valorB = listaB.get(j);
+                
+                if(valorB < limite){
+                    suma += valorB;
+                }
+            }
+            sumas.addLast(suma);
+        }
+        
+        return sumas;
+    }
+    
+    public static List<String> getStringShorterThan(List<String> inputList, int k){
+        if(inputList == null || k < 0) return new LinkedList<>();
+        
+        List<String> palabras = new LinkedList<>();
+        
+        filtrarRecursivo(inputList, k, 0, palabras);
+        
+        return palabras;
+    }
+    
+    private static void filtrarRecursivo(List<String> inputList, int k, int index, List<String> palabras){
+        if(index >= inputList.size()){
+            return;
+        }
+        
+        String palabra = inputList.get(index);
+        if(palabra.length() < k){
+            palabras.addLast(palabra);
+        }
+        
+        filtrarRecursivo(inputList, k, index + 1, palabras);
+    }
+    
+    
+    
+    @Override
+    public String toString() {
+        if (header == null) return "[]";
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        
+        NodeList<E> pivot = header;
+        while (pivot != null) {
+            sb.append(pivot.getContent());
+            if (pivot.getNext() != null) {
+                sb.append(", ");
+            }
+            pivot = pivot.getNext();
+        }
+        
+        sb.append("]");
+        return sb.toString();
+    }
     
 }
