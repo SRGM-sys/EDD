@@ -213,14 +213,5 @@ public class LinkedList<E> implements List<E>{
     }
     
     
-    public void recorridoReverso(){
-        // Necesito un pivote que se irá moviendo
-        NodeList<E> n;
-        
-        for(n = last; n != null; n = this.getPrevious(n)){
-            System.out.println(n);
-        }
-    }
-    
     
 }
