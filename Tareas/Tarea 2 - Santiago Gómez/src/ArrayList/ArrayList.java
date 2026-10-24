@@ -1,5 +1,7 @@
 package ArrayList;
 
+import java.util.Iterator;
+
 public class ArrayList<E> implements List<E> {
     
     /* La clase ArrayList trabaja con 3 cosas
@@ -178,6 +180,29 @@ public class ArrayList<E> implements List<E> {
         resultado += "]";
         
         return resultado;
+    }
+    
+    
+    // Vamos a implementar manualmente el método iterator()
+    @Override
+    public Iterator<E> iterator(){
+        
+        // Creo mi clase anónima
+        Iterator<E> it = new Iterator<E>(){
+            int cont = 0;
+            
+            @Override
+            public boolean hasNext(){
+                return cont < size;
+            }
+            
+            @Override
+            public E next(){
+                return elements[cont++];
+            }
+        };
+        
+        return it;
     }
     
 }

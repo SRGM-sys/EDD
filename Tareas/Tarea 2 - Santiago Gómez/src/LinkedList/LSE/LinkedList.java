@@ -1,6 +1,7 @@
 package LinkedList.LSE;
 
 import LinkedList.List;
+import java.util.Iterator;
 
 public class LinkedList<E> implements List<E>{
     private NodeList<E> header;
@@ -212,6 +213,26 @@ public class LinkedList<E> implements List<E>{
         return oldElement;
     }
     
-    
+    public Iterator<E> iterator(){
+
+        Iterator<E> it = new Iterator(){
+            // Empezamos desde el header
+            NodeList<E> current = header;
+            
+            // Si el nodo viajero es nulo ya llego al final
+            @Override
+            public boolean hasNext(){
+                return current != null;
+            }
+            @Override
+            public E next(){
+                E element = current.getContent();
+                current = current.getNext();
+                return element;
+            }
+        };
+        return it;
+        
+    }
     
 }

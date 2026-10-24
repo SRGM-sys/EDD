@@ -1,7 +1,7 @@
 
 package LinkedList;
 
-public interface List<E> {
+public interface List<E> extends Iterable<E>{
     public boolean addFirst(E e);
     public boolean addLast(E e);
     public E removeFirst();

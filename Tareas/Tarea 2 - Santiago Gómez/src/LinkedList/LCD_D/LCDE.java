@@ -1,6 +1,7 @@
 package LinkedList.LCD_D;
 
 import LinkedList.List;
+import java.util.Iterator;
 
 public class LCDE<E> implements List<E> {
     private LCDENodo<E> last;
@@ -210,5 +211,42 @@ public class LCDE<E> implements List<E> {
     public void clear() {
         last = null;
         size = 0;
+    }
+    
+    
+    /*
+    En una lista circular debemos tener cuidado con el iterator
+    1) La lista puede estar vacía
+    */
+    @Override
+    public Iterator<E> iterator(){
+        
+        Iterator<E> it = new Iterator(){
+            
+            // Esta la opción de hacer last.getNext(), pero si last es null
+            // un null llamando a otro null da un error gravísimo
+            LCDENodo<E> current = null;
+            private int nodosVisitados = 0;
+            
+            @Override
+            public boolean hasNext(){
+                return nodosVisitados < size;
+            }
+            
+            @Override
+            public E next(){
+                
+                // Iniciamos el nodo
+                if(nodosVisitados == 0){
+                    current = current.getNext();
+                }
+                
+                E element = current.getContent();
+                current = current.getNext();
+                nodosVisitados++;
+                return element;
+            }
+        };
+        return it;
     }
 }

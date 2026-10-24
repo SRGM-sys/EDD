@@ -2,6 +2,7 @@
 package LinkedList.LCD_S;
 
 import LinkedList.List;
+import java.util.Iterator;
 
 public class LCE<E> implements List<E>{
     private LCENodo<E> last;
@@ -177,5 +178,35 @@ public class LCE<E> implements List<E>{
         targetNode.setContent(element);
 
         return oldElement;
+    }
+    
+    @Override
+    public Iterator<E> iterator(){
+        Iterator<E> it = new Iterator(){
+                        
+            // Esta la opción de hacer last.getNext(), pero si last es null
+            // un null llamando a otro null da un error gravísimo
+            private LCENodo<E> current = null;
+            private int nodosVisitados = 0;
+            
+            @Override
+            public boolean hasNext(){
+                return nodosVisitados < size;
+            }
+            
+            @Override
+            public E next(){
+                if(nodosVisitados == 0){
+                    current = last.getNext();
+                }
+                
+                E element = current.getContent();
+                current = current.getNext();
+                nodosVisitados++;
+                return element;
+            }
+            
+        };
+        return it;
     }
 }

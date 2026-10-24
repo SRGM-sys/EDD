@@ -1,6 +1,7 @@
 package LinkedList.LDE;
 
 import LinkedList.List;
+import java.util.Iterator;
 
 public class DoublyLinkedList<E> implements List<E> {
     private DoublyNodeList<E> header;
@@ -204,5 +205,28 @@ public class DoublyLinkedList<E> implements List<E> {
         header = null;
         last = null;
         size = 0;
+    }
+    
+    @Override
+    public Iterator<E> iterator(){
+        
+        Iterator<E> it = new Iterator(){
+            private DoublyNodeList<E> current = header;
+            
+            @Override
+            public boolean hasNext(){
+                return current != null;
+            }
+            
+            @Override
+            public E next(){
+                E element = current.getContent();
+                current = current.getNext();
+                return element;
+            }
+            
+        };
+        
+        return it;
     }
 }
